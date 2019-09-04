@@ -8,12 +8,13 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=horst
-PKG_VERSION:=5.1
-PKG_RELEASE:=2
+PKG_VERSION:=2019-05-20
+PKG_RELEASE:=3
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=https://github.com/br101/horst/archive/v$(PKG_VERSION)/
-PKG_HASH:=74b4cb1143d93c73c3b4bbbe0c36f89a790401bde9e894e94e2a27339ca384d9
+PKG_SOURCE_PROTO:=git
+PKG_SOURCE_URL:=https://github.com/br101/horst.git
+PKG_SOURCE_VERSION:=4b048f854683843bdee48808b93e84250e41bbd3
+PKG_MIRROR_HASH:=dbeea49d4ce56bee636f092a58be9ac7ae0f8c4296648b4e8f2fa3566e246c0d
 
 PKG_MAINTAINER:=Bruno Randolf <br1@einfach.org>
 PKG_LICENSE:=GPL-2.0+
@@ -23,13 +24,14 @@ PKG_BUILD_PARALLEL:=1
 
 include $(INCLUDE_DIR)/package.mk
 
-MAKE_FLAGS += DEBUG=1 LIBNL=tiny
+MAKE_FLAGS += DEBUG=0 LIBNL=tiny LIBUWIFI=
+TARGET_CFLAGS += -D_GNU_SOURCE
 
 define Package/horst
 	SECTION:=net
 	CATEGORY:=Network
 	SUBMENU:=Wireless
-	DEPENDS:=+libncurses +libnl-tiny
+	DEPENDS:=+libncurses +libnl-tiny +libuwifi
 	MAINTAINER:=Bruno Randolf <br1@einfach.org>
 	TITLE:=Highly Optimized 802.11 Radio Scanning Tool
 	URL:=http://br1.einfach.org/tech/horst/
@@ -46,7 +48,7 @@ endef
 
 define Package/horst/install
 	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/horst $(1)/usr/sbin/
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/build/horst $(1)/usr/sbin/
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/horst.sh $(1)/usr/sbin/
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) ./horst.init $(1)/etc/init.d/horst
