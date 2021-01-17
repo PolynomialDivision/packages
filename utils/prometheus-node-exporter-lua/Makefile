@@ -56,6 +56,17 @@ endef
 
 # Additional optional exporters:
 
+define Package/prometheus-node-exporter-lua-babeld_ubus
+  $(call Package/prometheus-node-exporter-lua/Default)
+  TITLE+= (babeld ubus collector)
+  DEPENDS:=prometheus-node-exporter-lua +libubus-lua
+endef
+
+define Package/prometheus-node-exporter-lua-babeld_ubus/install
+	$(INSTALL_DIR) $(1)/usr/lib/lua/prometheus-collectors
+	$(INSTALL_BIN) ./files/usr/lib/lua/prometheus-collectors/babeld_ubus.lua $(1)/usr/lib/lua/prometheus-collectors/
+endef
+
 define Package/prometheus-node-exporter-lua-bmx6
   $(call Package/prometheus-node-exporter-lua/Default)
   TITLE+= (bmx6 links collector)
