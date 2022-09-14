@@ -1,6 +1,6 @@
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=python3-flent
+PKG_NAME:=flent
 PKG_VERSION:=2.0.1
 PKG_RELEASE:=$(AUTORELEASE)
 
